@@ -1,0 +1,8 @@
+{
+  "name": "SiteSentry",
+  "description": "AI-powered site safety intelligence platform for real-time CCTV telemetry, computer vision hazard detection, and incident response operations.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

@@ -1,94 +1,78 @@
-# SiteSentry Integrated
+# SiteSentry — AI Safety Intelligence Platform
 
-This is a safe, staged integration of the upstream Visionnaire Flutter client
-with the Construction Hazard Detection engine. The original `sitescentry`
-directory is unchanged. Each upstream project remains an independent Git
-checkout so its provenance and updates stay traceable.
+SiteSentry is an AI-powered site safety operations platform for construction sites, industrial facilities, and manufacturing plants. It delivers real-time CCTV monitoring, computer vision hazard detection (PPE compliance, restricted zone intrusions, proximity risks), and incident response workflow management.
 
-## Layout
+## Port & Rewrite Overview
 
-* `visionnaire-client/` — **primary UI**: the upstream Flutter client for
-  live-stream overlays, violation records, notifications, documents, and
-  role-based safety operations.
-* `hazard-engine/` — upstream YOLO, RTSP, MediaMTX, PostgreSQL and Redis
-  pipeline from `yihong1120/Construction-Hazard-Detection`.
-* `dashboard/` — retained React prototype and Node inference bridge. It is a
-  migration reference, not the primary application UI.
-* `training/` — documentation for the supplied Construction PPE dataset.
+This application was migrated to a high-performance React + TypeScript single-page application powered by Vite and Tailwind CSS.
 
-## What works now
+### Core Features
 
-The dashboard runs independently, keeps live phone-to-dashboard WebRTC, and
-has an `/api/inference` bridge that posts a captured image to the upstream
-FastAPI `/detect` endpoint. The bridge normalizes bounding boxes and creates
-real dashboard alerts for the PPE dataset's `no_helmet`, `no_goggle`,
-`no_gloves`, and `no_boots` labels.
+1. **Safety Operations Center Dashboard (`/`)**
+   - Real-time CCTV node feeds with status badges and AI detection metrics.
+   - Live stream integration supporting mobile and device webcams.
+   - Dynamic site risk index (Low, High, Critical) with automatic recalculation.
+   - Unresolved safety alert queue with instant alert notifications.
 
-The bridge requires a valid JWT because the upstream `/detect` endpoint is
-intentionally protected. It does not bypass the engine's authentication.
+2. **Camera Fleet Management (`/cameras`)**
+   - Active CCTV node directory with status filtering (`all`, `online`, `warning`, `offline`) and search.
+   - Real-time detection counters and zone assignment tags.
+   - Dedicated Mobile CCTV Node gateway (`/camera-source`).
 
-## Run the primary Flutter client
+3. **Node Telemetry & Stream Viewer (`/cameras/:id`)**
+   - High-definition live RTSP stream viewport with bounding box overlay markers.
+   - Stream telemetry including FPS, resolution, codec, active objects, and PPE compliance score.
+   - Manual hazard simulation action to test alarm dispatchers.
 
-Install Flutter 3.44 or newer and JDK 17, then follow the upstream client
-bootstrap process:
+4. **Mobile CCTV Camera Mode (`/camera-source`)**
+   - Turns any browser, mobile phone, or laptop webcam into a live CCTV node (`CAM-MOBILE-001`).
+   - Supports camera switching (front/rear lens), start/stop streaming, and live recording indicators.
 
-```powershell
-cd visionnaire-client
-flutter pub get
-```
+5. **AI Computer Vision Detection Canvas (`/detection`)**
+   - Multi-class bounding box stream (Helmet OK, Missing Safety Vest violation, Forklift Machine).
+   - Real-time event stream log displaying detected objects and timestamps.
+   - Active detections count, compliance percentage, and restricted zone intrusion monitors.
 
-Copy the safe configuration templates described in
-`visionnaire-client/README.md`, set this deployment's BFF/API values, then use
-the provided wrapper to run or build. The upstream Flutter client deliberately
-does not carry a working production endpoint, Firebase project, OAuth client,
-or signing material.
+6. **Alert Console & Review Workflow (`/alerts`)**
+   - Dual-pane inspection workspace with captured evidence snapshot view.
+   - Supervisor action buttons: **Acknowledge Alert**, **Escalate to Incident**, and **Dismiss**.
+   - Escalating an alert automatically provisions a new Incident investigation record.
 
-## Run the retained React prototype
+7. **Alert Audit History Table (`/alerts/table`)**
+   - Filterable table of all detected safety warnings with priority filters (`CRITICAL`, `HIGH`, `MEDIUM`).
 
-In one terminal:
+8. **Incident Investigation Management (`/incidents` & `/incidents/:id`)**
+   - Comprehensive incident audit log with status badges (`OPEN`, `IN_PROGRESS`, `RESOLVED`).
+   - Incident case files with dual-frame evidence snapshots (Frame #1420 Detection Box, Frame #1425 Zoom Telemetry).
+   - Investigation audit trail, status updates, and editable supervisor resolution notes.
 
-```powershell
-cd dashboard\backend
+9. **Interactive 3D Blueprint Site Map (`/site-map`)**
+   - Isometric facility coordinate mesh with zone risk overlays.
+   - Facility zone selector (`All`, `Main Yard`, `Warehouse`, `Chemical Storage`, `South Parking`).
+   - Interactive camera pins with node inspector and direct stream access.
+
+10. **Analytics & Performance Benchmarks (`/analytics`)**
+    - Time-range filters (`24H`, `7D`, `30D`, `90D`).
+    - Key metrics: Detection Precision (97%), False Alert Rate (2%), Avg Response Time (1m 38s), Resolution Rate (95%).
+    - Categorized safety violations breakdown chart (Missing Helmet, No Safety Vest, Restricted Intrusion, Forklift Speeding).
+    - One-click CSV export of complete safety analytics and logs.
+
+11. **System & Safety Rule Settings (`/settings`)**
+    - Toggle individual AI detection engines (PPE, Intrusion, Fire & Smoke, Crowd Evaluation, Proximity Warning, Auto-Escalation).
+    - Adjustable AI confidence threshold slider (50% to 99%).
+
+12. **Operations Center Authentication (`/login`)**
+    - Supervisor login screen with industrial backdrop and demo credentials.
+
+## Development & Build
+
+```bash
+# Install dependencies
 npm install
+
+# Start Vite dev server on port 3000
 npm run dev
+
+# Build for production
+npm run build
 ```
-
-In another terminal:
-
-```powershell
-cd dashboard
-npm install
-npm run dev
-```
-
-Open the Vite URL, and open `/camera-source` on a phone or a second browser
-for the existing WebRTC demo. The Vite development proxy sends `/api` and
-`/socket.io` to port 5000.
-
-## Connect the Flutter UI to real inference
-
-1. Follow `hazard-engine/README.md` to prepare its Python environment, model
-   registry, OIDC settings and detection API.
-2. Configure the Flutter client's BFF/API contracts under
-   `visionnaire-client/lib/services/` for your deployment. The client requires
-   backend services; it does not embed backend credentials or endpoints.
-3. The retained React bridge is useful for development snapshots only. It is
-   not required by the primary Flutter client.
-
-For continuous RTSP cameras, use `hazard-engine/main.py` rather than posting
-browser frames. It owns RTSP ingest, shared YOLO workers, MediaMTX publishing,
-Redis coordination, PostgreSQL records, and production notification services.
-
-## Dataset
-
-The supplied NDJSON manifest is external to this folder and was deliberately
-not copied: it contains signed image URLs, not the full image archive. See
-`training/README.md` before training.
-
-## Safety and production gaps
-
-Before a production launch, provide your own authenticated BFF, OIDC/Firebase
-configuration, database migration plan, media gateway and mobile signing
-identity. Also review the upstream AGPL-3.0 engine licence and the Flutter
-client's GPL-2.0-only licence, along with its branding restrictions, before
-distributing a combined deployment.
