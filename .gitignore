@@ -1,0 +1,24 @@
+# Local dashboard artifacts
+dashboard/node_modules/
+dashboard/dist/
+dashboard/backend/node_modules/
+dashboard/backend/.env
+
+# Python runtime and model artifacts
+hazard-engine/.venv/
+hazard-engine/models/
+hazard-engine/**/*.engine
+hazard-engine/__pycache__/
+hazard-engine/**/*.py[cod]
+
+# Flutter build products and deployment secrets
+visionnaire-client/.dart_tool/
+visionnaire-client/build/
+visionnaire-client/.env.social.prod.json
+visionnaire-client/lib/firebase_options.dart
+visionnaire-client/android/app/google-services.json
+visionnaire-client/ios/Runner/GoogleService-Info.plist
+
+# OS/editor state
+.DS_Store
+Thumbs.db

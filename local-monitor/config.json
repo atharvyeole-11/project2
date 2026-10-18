@@ -1,0 +1,12 @@
+{
+  "supervisor_hardhat": "white",
+  "danger_zones": [
+    {
+      "id": "power-station-a",
+      "name": "Power Station A",
+      "color": "red",
+      "polygon": [[0.68, 0.12], [0.96, 0.12], [0.96, 0.84], [0.68, 0.84]]
+    }
+  ],
+  "proximity_threshold_pixels": 120
+}

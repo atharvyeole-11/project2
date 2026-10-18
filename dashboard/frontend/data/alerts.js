@@ -1,0 +1,32 @@
+export const alerts = [
+  {
+    id: "ALT-001",
+    type: "PPE Violation",
+    camera: "CAM-001",
+    location: "North Entrance",
+    priority: "HIGH",
+    status: "NEW",
+    time: "10:42 AM",
+    description: "Worker detected without safety helmet.",
+  },
+  {
+    id: "ALT-002",
+    type: "Restricted Zone",
+    camera: "CAM-003",
+    location: "Chemical Storage",
+    priority: "CRITICAL",
+    status: "ACKNOWLEDGED",
+    time: "10:38 AM",
+    description: "Person detected inside restricted zone.",
+  },
+  {
+    id: "ALT-003",
+    type: "Crowd Risk",
+    camera: "CAM-002",
+    location: "Warehouse",
+    priority: "MEDIUM",
+    status: "ASSIGNED",
+    time: "10:25 AM",
+    description: "Crowd density exceeded safe threshold.",
+  },
+];
