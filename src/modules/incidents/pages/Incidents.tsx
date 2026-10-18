@@ -10,49 +10,49 @@ export default function Incidents() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Safety Operations Center — Incident Management"
-        subtitle="Escalated safety breaches, investigation workflows, and assigned safety personnel log."
+        title="Safety Operations Center — Incident Investigation Desk"
+        subtitle="Escalated safety breaches, active supervisor investigation files, and containment workflows."
       />
 
       {/* Screen 8 Incidents Table */}
-      <div className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-sm">
-        <div className="p-4 bg-white border-b border-slate-100 flex justify-between items-center text-xs">
-          <span className="font-bold text-slate-900">
+      <div className="rounded-2xl bg-slate-900/70 backdrop-blur-xl border border-white/[0.08] overflow-hidden shadow-xl">
+        <div className="p-4 bg-slate-950/40 border-b border-white/[0.06] flex justify-between items-center text-xs font-mono">
+          <span className="font-bold text-white uppercase tracking-wider">
             Incident Investigation Records ({incidents.length})
           </span>
-          <span className="text-slate-400 font-mono">Real-Time Operational Log</span>
+          <span className="text-cyan-400">Tactical Docket Active</span>
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs text-slate-700">
-            <thead className="bg-slate-50 text-slate-500 uppercase tracking-wider font-semibold border-b border-slate-200">
+          <table className="w-full text-left text-xs text-slate-300 font-mono">
+            <thead className="bg-slate-950/80 text-slate-400 uppercase tracking-wider font-semibold border-b border-white/[0.08]">
               <tr>
-                <th className="p-3.5">Incident ID</th>
-                <th className="p-3.5">Related Alert</th>
-                <th className="p-3.5">Case Title / Breach</th>
-                <th className="p-3.5">Location</th>
-                <th className="p-3.5">Date / Time</th>
-                <th className="p-3.5">Assigned Officer</th>
-                <th className="p-3.5">Status</th>
-                <th className="p-3.5 text-right">View Case</th>
+                <th className="p-4">Incident ID</th>
+                <th className="p-4">Related Alert</th>
+                <th className="p-4">Docket Breach / Title</th>
+                <th className="p-4">Facility Sector</th>
+                <th className="p-4">Date / Time</th>
+                <th className="p-4">Assigned Officer</th>
+                <th className="p-4">Status</th>
+                <th className="p-4 text-right">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-white/[0.04]">
               {incidents.map((inc) => (
-                <tr key={inc.id} className="hover:bg-slate-50 transition-colors">
-                  <td className="p-3.5 font-mono text-blue-600 font-bold">{inc.id}</td>
-                  <td className="p-3.5 font-mono text-slate-500">
+                <tr key={inc.id} className="hover:bg-slate-800/40 transition-colors">
+                  <td className="p-4 font-bold text-cyan-400">{inc.id}</td>
+                  <td className="p-4 text-slate-500 font-bold">
                     {inc.relatedAlert || inc.alert || '—'}
                   </td>
-                  <td className="p-3.5 font-semibold text-slate-900">{inc.title}</td>
-                  <td className="p-3.5">{inc.location}</td>
-                  <td className="p-3.5 font-mono text-slate-400">
+                  <td className="p-4 font-semibold text-white font-sans">{inc.title}</td>
+                  <td className="p-4 text-slate-300 font-sans">{inc.location}</td>
+                  <td className="p-4 text-slate-500">
                     {inc.date} {inc.time ? `• ${inc.time}` : ''}
                   </td>
-                  <td className="p-3.5 font-medium text-slate-700">
+                  <td className="p-4 text-slate-300 font-sans">
                     {inc.assignedUser || inc.assignedTo || 'Unassigned'}
                   </td>
-                  <td className="p-3.5">
+                  <td className="p-4">
                     <Badge
                       type={
                         inc.status === 'OPEN'
@@ -65,12 +65,12 @@ export default function Incidents() {
                       {inc.status}
                     </Badge>
                   </td>
-                  <td className="p-3.5 text-right">
+                  <td className="p-4 text-right">
                     <Link
                       to={`/incidents/${inc.id}`}
-                      className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-xs transition-colors inline-block"
+                      className="px-3 py-1.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-xl text-xs transition-all shadow-[0_0_12px_rgba(6,182,212,0.25)] inline-block"
                     >
-                      Open File →
+                      Open Case →
                     </Link>
                   </td>
                 </tr>
